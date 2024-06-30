@@ -1,0 +1,331 @@
+<!-- Index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, 
+				initial-scale=1.0">
+
+    <link rel="stylesheet" href="../survey-form/style.css">
+    <title>Survey Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e47c7c;
+        }
+
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 5px 5px 20px 2px rgb(45, 43, 43);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            margin-top: 1rem;
+        }
+
+        input {
+            padding: 10px;
+            box-sizing: border-box;
+            margin: 1.2rem 0;
+        }
+
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+        }
+
+        input[type="textarea"] {
+            width: 100%;
+            height: 10rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #e47c7c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e47c7c;
+        }
+
+        .error {
+            border: 3px solid red;
+        }
+
+        .errorText {
+            padding: 1rem;
+            border: 2px solid red;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 12px;
+            font-size: 1.2rem;
+            font-family: "Lucida Sans",
+                "Lucida Sans Regular",
+                sans-serif;
+        }
+
+        .successText {
+            padding: 1rem;
+            border: 4px solid green;
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 4px 12px;
+            font-size: 1.2rem;
+            font-family: "Lucida Sans",
+                "Lucida Sans Regular",
+                sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <h1>Survey Form</h1>
+
+        <h4 id="errorText"></h4>
+
+
+        <form id="surveyForm">
+
+            <label for="name">
+                Name:
+            </label><br>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="age">
+                Age:
+            </label><br>
+            <input type="number" id="age" name="age" required><br>
+
+            <label>
+                Favorite type of Sport
+            </label><br>
+            <input type="radio" id="indoor" name="type" value="Indoor" required>
+
+            <label for="indoor">
+                Indoor
+            </label><br>
+            <input type="radio" id="outdoor" name="type" value="Outdoor" required>
+
+            <label for="outdoor">
+                Outdoor
+            </label><br>
+            <input type="radio" id="both" name="type" value="Both" required>
+
+            <label for="both">
+                Both
+            </label><br>
+
+            <label for="favourite-sport">
+                Favorite Sport to Watch:
+            </label><br>
+            <input type="text" id="favorite-sport" name="favorite-sport" required><br>
+
+            <label for="favorite--sport">
+                Favorite Sport to Play:
+            </label><br>
+            <input type="text" id="favorite--sport" name="favorite--sport" required><br>
+
+            <label for="favorite-sport-person">
+                Favorite Sports-person:
+            </label><br>
+            <input type="text" id="favorite-sport-person" name="favorite-sport-person" required><br>
+
+
+            <label for="feedback">
+                Your Thoughts on Sports (optional):
+            </label><br>
+            <input type="textarea" id="feedback" name="feedback"><br>
+
+
+
+            <button type="submit">
+                Submit
+            </button>
+        </form>
+    </div>
+
+    <script src="../survey-form/index.js"></script>
+    <script>
+        document
+            .getElementById("surveyForm")
+            .addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+                    let nameField =
+                        document.getElementById(
+                            "name"
+                        );
+                    let ageField =
+                        document.getElementById(
+                            "age"
+                        );
+                    let errorText =
+                        document.getElementById(
+                            "errorText"
+                        );
+
+                    let name = nameField.value;
+                    let age = ageField.value;
+
+
+                    let Regex = /^[A-Za-z ]+$/;
+
+
+                    if (!name.match(Regex)) {
+                        nameField.classList.add(
+                            "error"
+                        );
+                        errorText.innerHTML =
+                            `Name field should only contain 
+					English alphabets and spaces`;
+                        errorText.classList.add(
+                            "errorText"
+                        );
+                        return;
+                    }
+
+
+                    else if (
+                        isNaN(age) ||
+                        age < 1 ||
+                        age > 150
+                    ) {
+                        ageField.classList.add(
+                            "error"
+                        );
+                        errorText.innerHTML =
+                            `Age should only contain valid 
+					values ( 1 - 150 )`;
+                        errorText.classList.add(
+                            "errorText"
+                        );
+                        return;
+                    }
+
+
+                    if (
+                        nameField.classList.contains(
+                            "error"
+                        )
+                    )
+                        nameField.classList.remove(
+                            "error"
+                        );
+
+
+                    if (
+                        ageField.classList.contains(
+                            "error"
+                        )
+                    )
+                        ageField.classList.remove(
+                            "error"
+                        );
+
+
+                    errorText.innerHTML =
+                        "Submitted Successfully";
+                    errorText.classList.add(
+                        "successText"
+                    );
+
+                    const formData =
+                        new FormData(
+                            event.target
+                        );
+                    const formValues = {};
+
+
+                    formData.forEach(
+                        (value, key) => {
+                            formValues[key] =
+                                value;
+                        }
+                    );
+
+
+                    const csvContent =
+                        convertToCSV(
+                            formValues
+                        );
+                    const blob = new Blob(
+                        [csvContent],
+                        { type: "text/csv" }
+                    );
+
+
+                    const link =
+                        document.createElement(
+                            "a"
+                        );
+                    link.href =
+                        window.URL.createObjectURL(
+                            blob
+                        );
+                    link.download =
+                        "survey_data.csv";
+                    link.click();
+
+
+                    setTimeout(
+                        document
+                            .getElementById(
+                                "surveyForm"
+                            )
+                            .reset(),
+                        2000
+                    );
+                }
+            );
+
+
+        function convertToCSV(objArr) {
+            const array =
+                typeof objArr !== "object"
+                    ? JSON.parse(objArr)
+                    : objArr;
+            let result = "";
+
+
+            const header =
+                Object.keys(array).join(",") +
+                "\n";
+            result += header;
+
+            for (const item in array) {
+                if (
+                    array.hasOwnProperty(item)
+                ) {
+                    result += array[item] + ",";
+                }
+            }
+            result = result.slice(0, -1);
+            result += "\n";
+
+            return result;
+        }
+
+    </script>
+</body>
+
+</html>
